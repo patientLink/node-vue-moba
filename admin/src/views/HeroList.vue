@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>英雄列表</h1>
+    <h1>英雄列表 <span style="font-weight: normal; font-size: 16px;">数量{{items.length}}</span></h1>
     <el-table :data="items">
       <el-table-column prop="_id" label="ID" width="230">
       </el-table-column>

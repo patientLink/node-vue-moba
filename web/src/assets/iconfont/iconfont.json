@@ -1,0 +1,135 @@
+{
+  "id": "1831360",
+  "name": "pvp-moba-vue",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "7486500",
+      "name": "pic icon",
+      "font_class": "picicon",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "11367835",
+      "name": "larkcloud_play",
+      "font_class": "ic_play",
+      "unicode": "e787",
+      "unicode_decimal": 59271
+    },
+    {
+      "icon_id": "180971",
+      "name": "相关",
+      "font_class": "xiangguan",
+      "unicode": "e67d",
+      "unicode_decimal": 59005
+    },
+    {
+      "icon_id": "303547",
+      "name": "前进",
+      "font_class": "qianjin",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "4717764",
+      "name": "前进",
+      "font_class": "qianjin1",
+      "unicode": "e696",
+      "unicode_decimal": 59030
+    },
+    {
+      "icon_id": "1822062",
+      "name": "back",
+      "font_class": "back",
+      "unicode": "e6e5",
+      "unicode_decimal": 59109
+    },
+    {
+      "icon_id": "10398169",
+      "name": "more read",
+      "font_class": "more2",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "180229",
+      "name": "book",
+      "font_class": "book",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "337745",
+      "name": "技巧",
+      "font_class": "icon",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "372210",
+      "name": "cc-menu-circle",
+      "font_class": "cc-menu-circle",
+      "unicode": "e672",
+      "unicode_decimal": 58994
+    },
+    {
+      "icon_id": "688144",
+      "name": "战斗 作战",
+      "font_class": "zhandouzuozhan",
+      "unicode": "e7b2",
+      "unicode_decimal": 59314
+    },
+    {
+      "icon_id": "994530",
+      "name": "投注技巧",
+      "font_class": "touzhujiqiao",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "1755204",
+      "name": "装备强化",
+      "font_class": "zhuangbeiqianghua",
+      "unicode": "e973",
+      "unicode_decimal": 59763
+    },
+    {
+      "icon_id": "2773127",
+      "name": "技能",
+      "font_class": "jineng",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "3919503",
+      "name": "铭文",
+      "font_class": "mingwen",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "6654507",
+      "name": "card-hero",
+      "font_class": "card-hero",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "8329823",
+      "name": "Menu",
+      "font_class": "Menu",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "12604311",
+      "name": "video",
+      "font_class": "xtqb_class_novideo",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    }
+  ]
+}

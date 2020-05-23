@@ -37,8 +37,8 @@ module.exports = app => {
     // if(req.Model.modelName === 'Article') {
     //   queryOptions.populate = 'categories'
     // }
-    console.log(req.app)
-    const items = await req.Model.find().setOptions(queryOptions).limit(10)
+    // console.log(req.app)
+    const items = await req.Model.find().setOptions(queryOptions).limit(100)
     res.send(items)
   })
   // 资源详情
@@ -99,6 +99,7 @@ module.exports = app => {
   })
 
   app.use(async (err, req, res, next) => {
+    console.log(err)
     res.status(err.statusCode || 500).send({
       message: err.message
     })
