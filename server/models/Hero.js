@@ -12,6 +12,17 @@ const schema = new mongoose.Schema({
     attack: {type: Number},
     survive: {type: Number},
   },
+  recommendSkills: {
+    main: {
+      icon: {type: String},
+      name: {type: String}
+    },
+    vice: {
+      icon: {type: String},
+      name: {type: String}
+    },
+    common: [{type: mongoose.SchemaTypes.ObjectId, ref: 'CommonSkill'}]
+  },
   skills: [{
     icon: {type: String},
     name: {type: String},

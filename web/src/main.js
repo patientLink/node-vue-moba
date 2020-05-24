@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import VueLazyLoad from 'vue-lazyload'
 
 Vue.config.productionTip = false
 
@@ -11,6 +12,7 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
 
 Vue.use(VueAwesomeSwiper)
+Vue.use(VueLazyLoad)
 
 import DefaultCard from 'components/DefaultCard'
 import ListCard from 'components/ListCard'

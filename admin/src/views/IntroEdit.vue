@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>{{id ? '编辑' : '新建'}}文章</h1>
+    <h1>{{id ? '编辑' : '新建'}}攻略</h1>
     <el-form label-width="120px" @submit.native.prevent="save">
       <el-form-item  label="所属分类">
         <el-select v-model="model.categories" multiple>
@@ -14,6 +14,18 @@
       </el-form-item>
       <el-form-item  label="标题">
         <el-input v-model="model.title"></el-input>
+      </el-form-item>
+      <el-form-item  label="封面">
+        <el-upload
+          class="avatar-uploader"
+          :action="uploadUrl"
+          :headers="getAuthHeaders()"
+          :show-file-list="false"
+          :on-success="afterUpload"
+          >
+          <img v-if="model.img" :src="model.img" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
       </el-form-item>
       <el-form-item  label="详情">
         <VueEditor 
@@ -30,8 +42,7 @@
 </template>
 
 <script>
-  import {VueEditor} from 'vue2-editor'
-
+import {VueEditor} from 'vue2-editor'
   export default {
     props: {
       id: {}
@@ -46,23 +57,27 @@
       VueEditor
     },
     methods: {
+      afterUpload(res) {
+        console.log(res)
+        this.$set(this.model, 'img', res.url)
+      },
       async save() {
         let res
         if(this.id) {
-          res = await this.$http.put(`rest/articles/${this.id}`, this.model)
+          res = await this.$http.put(`rest/intros/${this.id}`, this.model)
         }else{
-          res = await this.$http.post('rest/articles', this.model)
+          res = await this.$http.post('rest/intros', this.model)
         }
         
         console.log(res)
-        this.$router.push('/articles/list')
+        this.$router.push('/intros/list')
         this.$message({
           type: 'success',
           message: '保存成功'
         })
       },
       async fetch() {
-        const res = await this.$http.get(`rest/articles/${this.id}`)
+        const res = await this.$http.get(`rest/intros/${this.id}`)
         console.log(res.data)
         this.model = res.data
       },

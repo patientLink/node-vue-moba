@@ -1,14 +1,14 @@
 <template>
   <div>
-    <h1>物品列表</h1>
+    <h1>视频列表</h1>
     <el-table :data="items">
       <el-table-column prop="_id" label="ID" width="230">
       </el-table-column>
-      <el-table-column prop="name" label="物品名称" >
+      <el-table-column prop="title" label="视频名称" >
       </el-table-column>
-      <el-table-column prop="icon" label="图标" >
+      <el-table-column prop="img" label="视频封面" >
         <template v-slot:default="scope">
-          <img :src="scope.row.icon" alt="" style="height: 3rem;">  
+          <img :src="scope.row.img" alt="" style="width: 13rem;">  
         </template>
       </el-table-column>
       <el-table-column
@@ -19,7 +19,7 @@
           <el-button 
             type="text" 
             size="small" 
-            @click="$router.push(`/items/edit/${scope.row._id}`)"
+            @click="$router.push(`/videos/edit/${scope.row._id}`)"
             >
             编辑
           </el-button>
@@ -45,17 +45,17 @@ export default {
   },
   methods: {
     async fetch() {
-      const res = await this.$http.get('rest/items')
+      const res = await this.$http.get('rest/videos')
       this.items = res.data
       console.log(res)
     },
     async remove(row) {
-      this.$confirm(`是否确定要删除物品 "${row.name}"`, '提示', {
+      this.$confirm(`是否确定要删除视频 "${row.name}"`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async () => {
-        await this.$http.delete(`rest/items/${row._id}`)
+        await this.$http.delete(`rest/videos/${row._id}`)
         this.$message({
           type: 'success',
           message: '删除成功!'

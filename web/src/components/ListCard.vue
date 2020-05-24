@@ -1,9 +1,12 @@
 <template>
-  <div class="card pl-3 pr-3 mt-3 pb-2">
-    <div :class="['card-header','d-flex','fs-xl', 'pt-3', 'pb-3', withBaseline ? 'card-header-with-baseline':'']">
+  <div class="list-card card pl-3 pr-3 mt-3 pb-2">
+    <div :class="['card-header','d-flex','fs-xl', 'pt-3', 'pb-3', withBanner ? '':'card-header-with-baseline']">
       <i class="iconfont mr-2 fs-lg" :class="`icon-${icon}`"></i>
       <div class="card-header-title  flex-1 ">{{title}}</div>
       <i class="iconfont icon-more2"></i>
+    </div>
+    <div v-if="withBanner" class="banner-image pb-2" :class="{'card-header-with-baseline':`${withBanner}`}">
+      <slot name="banner"></slot>
     </div>
     <div class="card-body">
       <!-- 导航栏 -->
@@ -52,7 +55,7 @@ export default {
       type: String, 
       default: ''
     },
-    withBaseline: {
+    withBanner: {
       type: Boolean,
       default: false
     },
@@ -65,7 +68,8 @@ export default {
   },
   data() {
     return {
-      currentIndex: 0
+      currentIndex: 0,
+      imgSrc: ''
     }
   }
 }
@@ -73,21 +77,40 @@ export default {
 
 <style lang="scss">
   @import '~assets/scss/variables.scss';
-  .card {
-    background: map-get($map: $colors, $key: 'white');
-    border-bottom: 1px solid map-get($map: $colors, $key: 'grey-2');
-  }
-  .card-header {
-    line-height: 1.5385rem;
-    position: relative;
-    &.card-header-with-baseline::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: map-get($map: $colors, $key: 'grey-2');
+  .list-card {
+    &.card {
+      background: map-get($map: $colors, $key: 'white');
+      border-bottom: 1px solid map-get($map: $colors, $key: 'grey-2');
+    }
+    .card-header {
+      line-height: 1.5385rem;
+      position: relative;
+      &.card-header-with-baseline::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: map-get($map: $colors, $key: 'grey-2');
+      }
+    }
+    .banner-image {
+      position: relative;
+      img {
+        width: 100%;
+        height: auto;
+      }
+      &.card-header-with-baseline::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: map-get($map: $colors, $key: 'grey-2');
+      }
     }
   }
+  
 </style>

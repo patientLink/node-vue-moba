@@ -59,7 +59,30 @@
             <el-rate style="margin-top:0.6rem" :max="9" show-score v-model="model.scores.survive"></el-rate>
           </el-form-item>
           <el-form-item label="推荐加点">
-            
+            <el-row>
+              <el-col><span>主升技能</span></el-col>
+              <el-col>
+                <el-select v-model="model.recommendSkills.main" value-key="name" placeholder="主升技能" filterable>
+                  <el-option v-for="item of model.skills" :key="item._id" :label="item.name"  :value="item"></el-option>
+                </el-select>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col><span>副升技能</span></el-col>
+              <el-col>
+                <el-select v-model="model.recommendSkills.vice" value-key="name" placeholder="副升技能" filterable>
+                  <el-option v-for="item of model.skills" :key="item._id" :label="item.name" :value="item"></el-option>
+                </el-select>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col><span>召唤师技能</span></el-col>
+              <el-col>
+                <el-select v-model="model.recommendSkills.common" multiple filterable>
+                  <el-option v-for="item of commonSkills" :key="item._id" :label="item.name" :value="item._id"></el-option>
+                </el-select>
+              </el-col>
+            </el-row>
           </el-form-item>
 
           <el-form-item label="顺风出装">
@@ -170,7 +193,7 @@
 
       </el-tabs>
       <el-form-item style="margin-top: 1rem">
-        <el-button type="primary" native-type="submint">保存</el-button>
+        <el-button type="primary" native-type="submit">保存</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -187,7 +210,8 @@ export default {
       categories: [],
       items: [],
       heroes: [],
-      commonskills: [],
+      commonSkills: [],
+      
       model: {
         name: "",
         title: "",
@@ -198,6 +222,11 @@ export default {
           attack: 0,
           survive: 0
         },
+        recommendSkills: {
+          main: {},
+          vice: {},
+          common: []
+        },
         items1: [],
         items2: [],
         usageTips: "",
@@ -207,6 +236,11 @@ export default {
         partners: []
       }
     };
+  },
+  computed: {
+    // recommendSkill() {
+    //   return [...this.commonskills, ...this.model.skills]
+    // }
   },
   methods: {
     async save() {
@@ -246,7 +280,7 @@ export default {
     },
     async fetchCommonSkills() {
       const res = await this.$http.get(`rest/common_skills`);
-      this.commonskills = res.data;
+      this.commonSkills = res.data;
     }
   },
   created() {

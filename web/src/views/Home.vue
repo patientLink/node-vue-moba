@@ -202,23 +202,64 @@
     </l-card>
     <l-card 
       title="英雄列表" 
-      :withBaseline="true"
+      :withBanner="true"
       icon='card-hero'
       :categories="heroCats"
     >
+      <template #banner >
+        <img src="~assets/images/home-heroes-banner.jpg" alt="">
+      </template>
       <template #items="{category}">
-        <div class="d-flex flex-wrap">
+        <div class="d-flex flex-wrap" v-lazy-container="{ selector: 'img' }">
           <router-link
             tag="div"
             :to="`/heroes/${hero._id}`" 
             class="px-2 text-center pb-2 fs-sm" 
             v-for="(hero, i) in category" :key="i"
             style="width: 20%"
-            
             >
-          
-            <img class="w-100" :src="hero.avatar" alt="">
+            <img class="w-100" :data-src="hero.avatar" alt="">
             <div>{{hero.name}}</div>
+          </router-link>
+          
+        </div>
+      </template>
+    </l-card>
+    <l-card 
+      title="精彩视频" 
+      icon='xtqb_class_novideo'
+      :categories="videoCats"
+    >
+      <template #items="{category}">
+        <div class="d-flex flex-wrap jc-between" v-lazy-container="{ selector: 'img' }">
+          <router-link
+            tag="div"
+            :to="`/heroes/${hero._id}`" 
+            class="px-2 text-center pb-2 fs-sm" 
+            v-for="(hero, i) in category" :key="i"
+            style="width: 49%"
+            >
+            <div>111</div>
+          </router-link>
+          
+        </div>
+      </template>
+    </l-card>
+    <l-card 
+      title="图文攻略" 
+      icon='book'
+      :categories="introCats"
+    >
+      <template #items="{category}">
+        <div class="d-flex flex-wrap jc-between" v-lazy-container="{ selector: 'img' }">
+          <router-link
+            tag="div"
+            :to="`/heroes/${hero._id}`" 
+            class="px-2 text-center pb-2 fs-sm" 
+            v-for="(hero, i) in category" :key="i"
+            style="width: 49%"
+            >
+            <div>111</div>
           </router-link>
           
         </div>
@@ -246,7 +287,9 @@ export default {
       },
       isMenuOpen: false,
       newsCats: [],
-      heroCats: []
+      heroCats: [],
+      videoCats: [],
+      introCats: []
     };
   },
   methods: {
@@ -262,6 +305,10 @@ export default {
   created() {
     this.fetchNewsCats();
     this.fetchHeroCats();
+  },
+  updated() {
+    // this.fetchNewsCats();
+    // this.fetchHeroCats();
   }
 };
 </script>

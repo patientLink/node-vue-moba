@@ -1,25 +1,33 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Login from 'views/Login.vue'
 import Main from 'views/Main.vue'
-import CategoryEdit from 'views/CategoryEdit'
-import CategoryList from 'views/CategoryList'
 
-import ItemEdit from 'views/ItemEdit'
-import ItemList from 'views/ItemList'
+const Login = ()=>import('views/Login.vue')
+const CategoryEdit = ()=>import('views/CategoryEdit.vue')
+const CategoryList = ()=>import('views/CategoryList.vue')
 
-import HeroEdit from 'views/HeroEdit'
-import HeroList from 'views/HeroList'
 
-import ArticleEdit from 'views/ArticleEdit'
-import ArticleList from 'views/ArticleList'
+const ItemEdit = ()=>import('views/ItemEdit.vue')
+const ItemList = ()=>import('views/ItemList.vue')
 
-import AdEdit from 'views/AdEdit'
-import AdList from 'views/AdList'
+const HeroEdit = ()=>import('views/HeroEdit.vue')
+const HeroList = ()=>import('views/HeroList.vue')
 
-import AdminUserEdit from 'views/AdminUserEdit'
-import AdminUserList from 'views/AdminUserList'
+const ArticleEdit = ()=>import('views/ArticleEdit.vue')
+const ArticleList = ()=>import('views/ArticleList.vue')
+
+const AdEdit = ()=>import('views/AdEdit.vue')
+const AdList = ()=>import('views/AdList.vue')
+
+const AdminUserEdit = ()=>import('views/AdminUserEdit.vue')
+const AdminUserList = ()=>import('views/AdminUserList.vue')
+
+const VideoList = ()=>import('views/VideoList.vue')
+const VideoEdit = ()=>import('views/VideoEdit.vue')
+
+const IntroList = ()=>import('views/IntroList.vue')
+const IntroEdit = ()=>import('views/IntroEdit.vue')
 
 Vue.use(VueRouter)
 
@@ -60,6 +68,14 @@ const routes = [
       { path: '/admin_users/create', component: AdminUserEdit },
       { path: '/admin_users/edit/:id', component: AdminUserEdit, props: true },
       { path: '/admin_users/list', component: AdminUserList },
+
+      { path: '/videos/create', component: VideoEdit },
+      { path: '/videos/edit/:id', component: VideoEdit, props: true },
+      { path: '/videos/list', component: VideoList },
+
+      { path: '/intros/create', component: IntroEdit },
+      { path: '/intros/edit/:id', component: IntroEdit, props: true },
+      { path: '/intros/list', component: IntroList },
     ]
   }
 ]

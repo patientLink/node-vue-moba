@@ -2,7 +2,7 @@
   <div class="page-hero">
     <!-- topbar -->
     <div class="topbar bg-black py-2 px-4 d-flex text-white ai-center bg-sprite" >
-      <router-link :to="{name: 'Main'}" class="logo_img bg-sprite"  />
+      <router-link to="/" class="logo_img bg-sprite"  />
       <div class="px-3 ">王者荣耀</div>
       <div class="flex-1">攻略站</div>
       <router-link 
@@ -41,11 +41,11 @@
       <!-- nav -->
       <div class="hero-nav bg-white px-3">
         <div class="nav d-flex ai-center jc-around">
-          <div>
-            <div class="nav-item active">英雄初识</div>
+          <div @click="currentMenuIndex=0">
+            <div class="nav-item" :class="{'active': currentMenuIndex === 0}">英雄初识</div>
           </div>
-          <div>
-            <div class="nav-item">进阶攻略</div>
+          <div @click="currentMenuIndex=1">
+            <div class="nav-item" :class="{'active': currentMenuIndex === 1}">进阶攻略</div>
           </div>
         </div>
       </div>
@@ -62,11 +62,12 @@
             <!-- skills -->
             <div class="hero-skills">
               <div class="d-flex jc-around ai-center">
-                <img :src="item.icon" 
+                <img 
                 class="icon"
                 :class="{active:currentSkillIndex===i}"
                 @click="currentSkillIndex = i"
                 v-for="(item, i) in model.skills" 
+                :src="item.icon" 
                 alt=""
                 :key="item.name" />
               </div>
@@ -82,42 +83,42 @@
             </div>
           </div>
           <!-- 加点/出装模块 -->
-          <d-card class="mt-3" :bBorder="false" :textBold="true" icon="jineng" title="加点建议" :moreIcon="false">
-            <div class="d-flex jc-between">
-              <div class="d-flex flex-column">
-                <span>主升</span>
-                <img src="" alt="">
-                <span>技能名</span>
+          <d-card class="mt-3 hero-recommend-skills" :bBorder="false" :textBold="true" icon="jineng" title="加点建议" :moreIcon="false">
+            <div class="d-flex jc-around" v-lazy-container="{ selector: 'img' }">
+              <div class="d-flex flex-column ai-center">
+                <span class="mb-2">主升</span>
+                <img :data-src="model.recommendSkills.main.icon" class="icon" alt="">
+                <span class="text">{{model.recommendSkills.main.name}}</span>
               </div>
-              <div class="d-flex flex-column">
-                <span>副升</span>
-                <img src="" alt="">
-                <span>技能名</span>
+              <div class="d-flex flex-column ai-center">
+                <span class="mb-2">副升</span>
+                <img :data-src="model.recommendSkills.vice.icon" alt="" class="icon">
+                <span class="text">{{model.recommendSkills.vice.name}}</span>
               </div>
-              <div class="d-flex flex-column">
-                <span>召唤师技能</span>
+              <div class="d-flex flex-column ai-center">
+                <span class="mb-2">召唤师技能</span>
                 <div class="d-flex">
-                  <div class="d-flex flex-column">
-                    <img src="" alt="">
-                    <span>技能名</span>
+                  <div class="d-flex flex-column ai-center" v-if="model.recommendSkills.common.length">
+                    <img :data-src="model.recommendSkills.common[0].icon" alt="" class="icon">
+                    <span class="text">{{model.recommendSkills.common[0].name}}</span>
                   </div>
-                  <div class="d-flex flex-column">
-                    <img src="" alt="">
-                    <span>技能名</span>
+                  <div class="d-flex flex-column ai-center" v-if="model.recommendSkills.common.length">
+                    <img :data-src="model.recommendSkills.common[1].icon" alt="" class="icon">
+                    <span class="text">{{model.recommendSkills.common[1].name}}</span>
                   </div>
                 </div>
               </div>
             </div>
           </d-card>
           <d-card class="mt-0" :textBold="true" icon="zhuangbeiqianghua" title="出装推荐" :moreIcon="false">
-            <div>
+            <div v-lazy-container="{ selector: 'img' }">
               <div class="fs-lg">顺风出装</div>
               <div class="d-flex jc-between mt-3 mb-3 bottom-border">
                 <div v-for="item in model.items1" 
                 :key="item._id" 
                 class="d-flex flex-column ai-center hero-item"
                 >
-                  <img :src="item.icon" alt="">
+                  <img :data-src="item.icon" alt="">
                   <span>{{item.name}}</span>
                 </div>
               </div>
@@ -127,7 +128,7 @@
                 :key="item._id" 
                 class="d-flex flex-column ai-center hero-item"
                 >
-                  <img :src="item.icon" alt="">
+                  <img :data-src="item.icon" alt="">
                   <span>{{item.name}}</span>
                 </div>
               </div>
@@ -142,18 +143,37 @@
           <d-card class="mt-3" :textBold="true" icon="touzhujiqiao" title="团战思路" :moreIcon="false">
             <p>{{model.teamTips}}</p>
           </d-card>
-          <d-card class="mt-3" :textBold="true" icon="mingwen" title="英雄关系" :moreIcon="false">
-            <div>
+          <d-card class="mt-3" :textBold="true" icon="mingwen" title="英雄关系" :moreIcon="false" >
+            <div class="mb-3 rs-card">
               <div class="fs-xl pb-3">最佳搭档</div>
               <div v-for="person in model.partners" 
               :key="person._id"
               class="d-flex ai-top pb-3 hero-rs"
               >
-                <img :src="person.hero.avatar" style="width: 3.6923rem; height: auto;" alt="">
-                <p class="pl-3" style="line-height: 1.5385rem">{{person.description}}</p>
+                <img class="mr-3" :src="person.hero.avatar" alt="">
+                <p  style="line-height: 1.5385rem">{{person.description}}</p>
               </div>
             </div>
-            
+            <div class="mb-3 rs-card">
+              <div class="fs-xl pb-3">被谁克制</div>
+              <div v-for="person in model.partners1" 
+              :key="person._id"
+              class="d-flex ai-top pb-3 hero-rs"
+              >
+                <img class="mr-3" :src="person.hero.avatar" alt="">
+                <p style="line-height: 1.5385rem">{{person.description}}</p>
+              </div>
+            </div>
+            <div class="rs-card">
+              <div class="fs-xl pb-3">克制谁</div>
+              <div v-for="person in model.partners2" 
+              :key="person._id"
+              class="d-flex ai-top pb-3 hero-rs"
+              >
+                <img class="mr-3" :src="person.hero.avatar" alt="">
+                <p style="line-height: 1.5385rem">{{person.description}}</p>
+              </div>
+            </div>
             
           </d-card>
         </swiper-slide>
@@ -173,9 +193,22 @@
     data() {
       return {
         model: {
-          categories: []
+          categories: [],
+          skills: [],
+          recommendSkills: {
+            main: {
+              name:'',
+              icon: ''
+            },
+            vice: {
+              name:'',
+              icon: ''
+            },
+            common: []
+          }
         },
-        currentSkillIndex: 0
+        currentSkillIndex: 0,
+        currentMenuIndex: 0
       }
     },
     computed: {
@@ -234,6 +267,19 @@
         }
       }
     }
+    .hero-recommend-skills {
+      font-size: 1.1538rem;
+      .text {
+        font-size: 0.6923rem;
+      }
+      .icon {
+        width: 4.6154rem;
+        height: 4.6154rem;
+        box-sizing: content-box;
+        border: 3px solid transparent;
+        border-radius: 45%;
+      }
+    }
     .hero-item {
       width: 14%;
       font-size: 0.6923rem;
@@ -248,10 +294,19 @@
         margin-bottom: 0.2308rem;
       }
     }
-    .hero-rs {
-      &:last-child {
-        border-bottom: 1px solid map-get($map: $colors, $key: 'grey-2');
+    .rs-card {
+      img {
+        // width: 3.6923rem; 
+        height: 3.6923rem;
+      }
+      &:nth-of-type(1), &:nth-of-type(2) {
+        .hero-rs {
+          &:last-child {
+            border-bottom: 1px solid map-get($map: $colors, $key: 'grey-2');
+          }
+        }
       }
     }
+    
   }
 </style>
