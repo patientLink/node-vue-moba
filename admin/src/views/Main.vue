@@ -64,7 +64,7 @@
             <el-dropdown-item command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <span>王小虎</span>
+        <span>{{username}}</span>
       </el-header>
       
       <el-main>
@@ -91,14 +91,9 @@
 <script>
   export default {
     data() {
-      const item = {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      };
       return {
         submenuIndex: ['1'],
-        tableData: Array(20).fill(item)
+        username: localStorage.username || ''
       }
     },
     methods: {

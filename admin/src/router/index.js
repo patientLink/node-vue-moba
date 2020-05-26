@@ -88,6 +88,9 @@ router.beforeEach((to, from, next) => {
   if(!to.meta.isPublic && !localStorage.token) {
     return next({name: 'Login'})
   }
+  if(localStorage.token && to.name == 'Login') {
+    return next({name: 'Main'})
+  }
   console.log(to.path)
   next()
 })

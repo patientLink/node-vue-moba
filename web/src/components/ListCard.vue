@@ -28,13 +28,13 @@
       <!-- 轮播图 -->
       <swiper 
         ref="list" 
-        :options="{autoHeight: true}" 
-        @slide-change="() => this.currentIndex = $refs.list.$swiper.realIndex">
+        :options="swiperOption" 
+        @slide-change="slideChangeHandler">
         <swiper-slide 
-          v-for="(category, i) in categories"
-          :key="i"
+          v-for="(category) in categories"
+          :key="category._id"
           >
-            <slot name="items" :category="category.newsList || category.heroList">
+            <slot name="items" :category="category.newsList || category.heroList || category.videoList || category.introList">
             </slot>
         </swiper-slide>
       </swiper>
@@ -64,12 +64,26 @@ export default {
       default() {
         return []
       }
+    },
+    swiperAutoHeight: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     return {
       currentIndex: 0,
-      imgSrc: ''
+      imgSrc: '',
+      swiperOption: {
+        autoHeight: this.swiperAutoHeight,
+        observer: true,
+      }
+    }
+  },
+  methods: {
+    slideChangeHandler() {
+      this.currentIndex = this.$refs.list.$swiper.realIndex;
+      this.$emit('slide', this.currentIndex)
     }
   }
 }

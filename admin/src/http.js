@@ -10,11 +10,13 @@ http.interceptors.request.use(function (config) {
   if(localStorage.token) {
     config.headers.Authorization = 'Bearer ' + localStorage.token
   }
+  config.headers['Access-Control-Expose-Headers'] = 'User'
   
   return config
 })
 
 http.interceptors.response.use(res => {
+  console.log(res)
   return res
 }, err => {
   if(err.response.data.message) {

@@ -16,9 +16,11 @@ Vue.use(VueLazyLoad)
 
 import DefaultCard from 'components/DefaultCard'
 import ListCard from 'components/ListCard'
+import LoadMore from 'components/LoadMore'
 
 Vue.component('d-card', DefaultCard)
 Vue.component('l-card', ListCard)
+Vue.component('load-more', LoadMore)
 
 import axios from 'axios'
 Vue.prototype.$http = axios.create({

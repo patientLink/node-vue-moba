@@ -29,14 +29,20 @@ export default {
     
   },
   methods: {
-    async login() {
-      const res = await this.$http.post('login', this.model)
-      localStorage.token = res.data.token
-      this.$router.push('/')
-      this.$message({
-        type: 'success',
-        message: '登陆成功'
+    login() {
+      this.$http.post('login', this.model).then((res) => {
+        // console.log(res)
+        localStorage.token = res.data.token
+        localStorage.username = res.headers.user
+        this.$router.push('/')
+        this.$message({
+          type: 'success',
+          message: '登陆成功'
+        })
+      }).then(() => {
+        this.model.password = ''
       })
+      
     }
   }
   

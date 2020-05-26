@@ -205,6 +205,7 @@
       :withBanner="true"
       icon='card-hero'
       :categories="heroCats"
+      ref="heroList"
     >
       <template #banner >
         <img src="~assets/images/home-heroes-banner.jpg" alt="">
@@ -232,39 +233,49 @@
     >
       <template #items="{category}">
         <div class="d-flex flex-wrap jc-between" v-lazy-container="{ selector: 'img' }">
-          <router-link
-            tag="div"
-            :to="`/heroes/${hero._id}`" 
-            class="px-2 text-center pb-2 fs-sm" 
-            v-for="(hero, i) in category" :key="i"
-            style="width: 49%"
+          <a
+            :href="video.link"
+            class="px-1 text-center pb-2" 
+            v-for="(video, i) in category" :key="i"
+            style="width: 50%; "
             >
-            <div>111</div>
-          </router-link>
-          
+            <img style="width: 100%; height: 7.8846rem" :data-src="video.img" alt="">
+            <div class="mt-2 text-more-ellipsis" style="line-height: 1.5rem;">{{video.title}}</div>
+            <div class="text-right fs-xs py-2" style="">{{video.createdAt | date}}</div>
+          </a>
         </div>
       </template>
     </l-card>
+    <load-more ref="videoLoadTrigger" @load-more="videoLoadHandler"></load-more>
     <l-card 
       title="图文攻略" 
       icon='book'
       :categories="introCats"
+      ref="introList"
+      @slide="(type) => this.currentIntroType = type"
     >
-      <template #items="{category}">
-        <div class="d-flex flex-wrap jc-between" v-lazy-container="{ selector: 'img' }">
+      <template #items="{category}" >
+        <div class="d-flex flex-column jc-start" v-lazy-container="{ selector: 'img' }">
           <router-link
             tag="div"
-            :to="`/heroes/${hero._id}`" 
-            class="px-2 text-center pb-2 fs-sm" 
-            v-for="(hero, i) in category" :key="i"
-            style="width: 49%"
+            :to="`/articles/${intro._id}+`" 
+            class="mx-3 pr-4 d-flex py-q bottom-border" 
+            v-for="(intro, i) in category" :key="i"
+            style="width: 100%; height: 7.0769rem"
             >
-            <div>111</div>
+            <img :data-src="intro.img" style="width:35%; height:auto;" alt="">
+            <div class="px-2 d-flex flex-column jc-between" style="width: 65%">
+              <p class="text-ellipsis" style="font-size: 1.1538rem;">{{intro.title}}</p>
+              <p class="text-more-ellipsis fs-sm text-grey" style="line-height: 1.2308rem; height: 2.4615rem">{{intro.title}}</p>
+              <span class="text-left fs-xs text-grey" style="">{{intro.createdAt | date}}</span>
+            </div>
+            
           </router-link>
           
         </div>
       </template>
     </l-card>
+    <load-more ref="introLoadTrigger" @load-more="introLoadHandler"></load-more>
   </div>
 </template>
 
@@ -283,32 +294,151 @@ export default {
       swiperOptions: {
         pagination: {
           el: ".pagination-home"
-        }
+        },
+        loop: true
       },
       isMenuOpen: false,
       newsCats: [],
       heroCats: [],
       videoCats: [],
-      introCats: []
+      introCats: [{name:'最新'},{name: '英雄'},{name: '新手'},{name: '官方'},{name: '同人'}],
+      introPageList: [0,0,0,0,0],
+      currentIntroType: 0
     };
   },
   methods: {
+
+    // 首页轮播图控制函数
+    swiperLoop() {
+      const swiperItem = this.$refs.mySwiper.$el;
+      let swiperHandler = () => {
+        this.homeSwiperTimer = setInterval(() => {
+          this.$refs.mySwiper.$swiper.slideNext()
+        }, 3000);
+      };
+
+      swiperHandler()
+      this.swiperLoopStopHandler = () => {
+        clearInterval(this.homeSwiperTimer)
+        swiperItem.addEventListener('touchend', () => {
+          swiperHandler()
+        },{once: true})
+      }
+
+      swiperItem.addEventListener('touchstart', this.swiperLoopStopHandler)
+    },
+    // 获取新闻列表
     async fetchNewsCats() {
       const res = await this.$http.get('news/list')
       this.newsCats = res.data
     },
+    // 获取英雄列表
     async fetchHeroCats() {
       const res = await this.$http.get('heroes/list')
       this.heroCats = res.data
+      console.log(1)
+      // this.$refs.heroList.refresh()
+    },
+    // 获取视频列表
+    async fetchVideoCats() {
+      const res = await this.$http.get('videos/list')
+      this.videoCats = res.data
+    },
+    // 获取攻略列表 按类别分页获取
+    async fetchIntroCats(type) {
+      let page = this.introPageList[type]
+      const res = await this.$http.get(`intros/list?type=${type}&page=${page}`)
+      if(page === 0) {
+        this.$set(this.introCats, `${type}`, res.data[0])
+      }else {
+        this.introCats[type].introList = [...this.introCats[type].introList, ...res.data[0].introList]
+      }
+      // 当前类别的页码自增1
+      this.introPageList[type]++
+    },
+    // 视频列表加载更多功能未实现
+    async videoLoadHandler() {
+      console.log('video load')
+    },
+    // 攻略列表加载更多
+    async introLoadHandler() {
+      await this.fetchIntroCats(this.currentIntroType)
+    },
+    // 防抖函数
+    debounce(fn, delay=200, immediate) { // immediate为立即触发型
+      let timer = null;
+      return function() {
+        let context = this;
+        if(timer) {
+          clearTimeout(timer)
+        }
+        if(immediate) {
+          let callNow = !timer; // 倒计时途中触发，则callNow为false，fn不执行
+          timer = setTimeout(() => {
+            timer = null;
+          })
+          if(callNow) {fn.apply(context, arguments)}
+        }else {
+          timer = setTimeout(() => {
+            fn.apply(context, arguments);
+          }, delay)
+        }
+      }
+    },
+    // 节流函数
+    throttle(fn, delay=200) {
+      let last = 0;
+      return function() {
+        let context = this;
+        let now = Date.now();
+        if(now - last > delay) {
+          fn.apply(context, arguments);
+          last = now;
+        }
+      }
     }
   },
   created() {
+    // 获取数据
     this.fetchNewsCats();
     this.fetchHeroCats();
+    this.fetchVideoCats();
+    this.fetchIntroCats(0);
+    this.fetchIntroCats(1);
+    this.fetchIntroCats(2);
+    this.fetchIntroCats(3);
+    this.fetchIntroCats(4);
+  },
+  mounted() {
+    console.log('home mounted')
+    
+    this.innerHeight = window.innerHeight;
+    // 攻略列表加载更多底部栏触发
+    this.introLoadTrigger = this.throttle(() => {
+      const trigger = this.$refs.introLoadTrigger.$el;
+      if(trigger.getBoundingClientRect().top < this.innerHeight) {
+        this.introLoadHandler()
+      }
+    }, 100)
+    
   },
   updated() {
-    // this.fetchNewsCats();
-    // this.fetchHeroCats();
+    // console.log('home updated')
+  },
+  activated() {
+    console.log('home activated')
+    document.addEventListener('scroll', this.introLoadTrigger)
+    this.swiperLoop()
+  },
+  deactivated() {
+    console.log('home disactivated')
+    clearInterval(this.homeSwiperTimer)
+    document.removeEventListener('scroll', this.introLoadTrigger)
+    this.$refs.mySwiper.$el.removeEventListener('touchstart', this.swiperLoopStopHandler)
+  },
+  beforeDestroy() {
+    console.log('home destroyed')
+    document.removeEventListener('scroll', this.introLoadTrigger)
   }
 };
 </script>
