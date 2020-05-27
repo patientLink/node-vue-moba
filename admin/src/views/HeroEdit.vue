@@ -47,16 +47,16 @@
             </el-select>
           </el-form-item>
           <el-form-item label="难度">
-            <el-rate style="margin-top:0.6rem" :max="9" show-score v-model="model.scores.difficult"></el-rate>
+            <el-rate style="margin-top:0.6rem" :max="10" show-score v-model="model.scores.difficult"></el-rate>
           </el-form-item>
           <el-form-item label="技能">
-            <el-rate style="margin-top:0.6rem" :max="9" show-score v-model="model.scores.skill"></el-rate>
+            <el-rate style="margin-top:0.6rem" :max="10" show-score v-model="model.scores.skill"></el-rate>
           </el-form-item>
           <el-form-item label="攻击">
-            <el-rate style="margin-top:0.6rem" :max="9" show-score v-model="model.scores.attack"></el-rate>
+            <el-rate style="margin-top:0.6rem" :max="10" show-score v-model="model.scores.attack"></el-rate>
           </el-form-item>
           <el-form-item label="生存">
-            <el-rate style="margin-top:0.6rem" :max="9" show-score v-model="model.scores.survive"></el-rate>
+            <el-rate style="margin-top:0.6rem" :max="10" show-score v-model="model.scores.survive"></el-rate>
           </el-form-item>
           <el-form-item label="推荐加点">
             <el-row>
