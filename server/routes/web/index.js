@@ -9,6 +9,7 @@ module.exports = app => {
   const Item = mongoose.model('Item')
   const Video = mongoose.model('Video')
   const Intro = mongoose.model('Intro')
+  const Ad = mongoose.model('Ad')
 
   // 初始化新闻数据
   // router.get('/news/init', async (req, res) => {
@@ -269,6 +270,36 @@ module.exports = app => {
     // })
 
     res.send(cats)
+  })
+
+  // 广告列表
+  router.get('/ads/list', async (req, res) => {
+    const payload = req.query || {name: 'home'}
+    const cats = await Ad.aggregate([
+      {
+        $match: {
+          name: payload.name
+        }
+      }, 
+      { 
+        $unwind: '$items'
+      },
+      {
+        $sort: {'items._id': -1}
+      },
+      {
+        $project: {_id: 0, items: 1}
+      }
+    ])
+    let subCats = cats.slice(0,3);
+    subCats = subCats.map((item, i) => {
+      return {
+        _id: item.items._id,
+        url: item.items.url,
+        img: item.items.image
+      }
+    })
+    res.send(subCats)
   })
 
   // 文章详情

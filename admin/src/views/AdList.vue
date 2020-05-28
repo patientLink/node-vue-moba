@@ -4,7 +4,7 @@
     <el-table :data="items">
       <el-table-column prop="_id" label="ID" width="230">
       </el-table-column>
-      <el-table-column prop="name" label="广告位标题" >
+      <el-table-column prop="name" label="广告位所属位置" >
       </el-table-column>
       <el-table-column
         fixed="right"

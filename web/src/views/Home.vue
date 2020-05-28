@@ -1,14 +1,10 @@
 <template>
   <div class="home">
     <swiper ref="mySwiper" :options="swiperOptions">
-      <swiper-slide>
-        <img src="~assets/images/swiper01.jpeg" class="w-100" alt />
-      </swiper-slide>
-      <swiper-slide>
-        <img src="~assets/images/swiper02.jpeg" class="w-100" alt />
-      </swiper-slide>
-      <swiper-slide>
-        <img src="~assets/images/swiper03.jpeg" class="w-100" alt />
+      <swiper-slide v-for="item in adsCats" :key="item._id">
+        <a :href="item.url">
+          <img :src="item.img" class="w-100" alt />
+        </a>
       </swiper-slide>
       <div class="swiper-pagination pagination-home text-right px-3 pb-2" slot="pagination"></div>
     </swiper>
@@ -298,6 +294,7 @@ export default {
         loop: true
       },
       isMenuOpen: false,
+      adsCats: [],
       newsCats: [],
       heroCats: [],
       videoCats: [],
@@ -326,6 +323,11 @@ export default {
       }
 
       swiperItem.addEventListener('touchstart', this.swiperLoopStopHandler)
+    },
+    // 获取首页广告列表
+    async fetchAds(name) {
+      const res = await this.$http.get(`ads/list?name=${name}`)
+      this.adsCats = res.data
     },
     // 获取新闻列表
     async fetchNewsCats() {
@@ -400,6 +402,7 @@ export default {
   },
   created() {
     // 获取数据
+    this.fetchAds('home')
     this.fetchNewsCats();
     this.fetchHeroCats();
     this.fetchVideoCats();
