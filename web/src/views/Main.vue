@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- topbar -->
-    <div class="topbar bg-black py-2 px-4 d-flex ai-center bg-sprite" >
+    <div class="topbar w100 bg-black py-2 px-4 d-flex ai-center bg-sprite" >
       <router-link to="/" class="logo_img bg-sprite"  />
       <div class="px-2 flex-1">
         <div class="text-white">王者荣耀</div>
@@ -42,9 +42,12 @@ export default {
 <style lang="scss">
   .topbar {
     background-position: 0 -27.5rem;
+    width: 100%;
     height: 3.4615rem;
+    // background-size: 100%;
     // 注意兼容性
     position: sticky;
+    left: 0;
     top: 0;
     z-index: 999;
 
