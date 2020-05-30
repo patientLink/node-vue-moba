@@ -10,6 +10,7 @@
         </el-form-item>
         <el-form-item >
           <el-button type="primary" native-type="submit">登录</el-button>
+          <el-button type="info" @click="showTip">游客登录</el-button>
         </el-form-item>
       </el-form>
       
@@ -42,7 +43,9 @@ export default {
       }).then(() => {
         this.model.password = ''
       })
-      
+    },
+    showTip() {
+      this.$message('用户名：visitor  密码: 123456')
     }
   }
   
