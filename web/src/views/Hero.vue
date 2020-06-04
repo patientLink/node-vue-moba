@@ -222,7 +222,10 @@
         this.model = res.data
       },
       moveToTop() {
-        window.scrollTo(0,0)
+        setTimeout(() => {
+          window.scroll(0,0)
+        }, 100)
+        
       }
     },
     created() {

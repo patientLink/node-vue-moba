@@ -390,12 +390,20 @@ export default {
     // 节流函数
     throttle(fn, delay=200) {
       let last = 0;
+      let timer = null;
       return function() {
         let context = this;
         let now = Date.now();
-        if(now - last > delay) {
+        if(now - last >= delay) {
+          clearTimeout(timer)
           fn.apply(context, arguments);
           last = now;
+        }else if(!timer){
+          timer = setTimeout(() => {
+            fn.apply(context, arguments)
+            last = now;
+            timer = null;
+          }, delay)
         }
       }
     }
@@ -415,14 +423,17 @@ export default {
   mounted() {
     console.log('home mounted')
     
-    this.innerHeight = window.innerHeight;
+    this.innerHeight = window.innerHeight 
+      || document.documentElement.clientHeight
+      || document.body.clientHeight;
     // 攻略列表加载更多底部栏触发
     this.introLoadTrigger = this.throttle(() => {
       const trigger = this.$refs.introLoadTrigger.$el;
+      // console.log(trigger.getBoundingClientRect().top)
       if(trigger.getBoundingClientRect().top - 100 < this.innerHeight) {
         this.introLoadHandler()
       }
-    }, 100)
+    }, 80)
     
   },
   updated() {
