@@ -224,13 +224,17 @@
       moveToTop() {
         setTimeout(() => {
           window.scroll(0,0)
+          console.log(window.scrollY)
         }, 100)
         
       }
     },
     created() {
       this.fetch();
-      this.moveToTop()
+    },
+    mounted() {
+      console.log(window.scrollY)
+      this.moveToTop();
     }
   }
 </script>
