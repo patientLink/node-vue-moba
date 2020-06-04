@@ -419,7 +419,7 @@ export default {
     // 攻略列表加载更多底部栏触发
     this.introLoadTrigger = this.throttle(() => {
       const trigger = this.$refs.introLoadTrigger.$el;
-      if(trigger.getBoundingClientRect().top < this.innerHeight) {
+      if(trigger.getBoundingClientRect().top - 100 < this.innerHeight) {
         this.introLoadHandler()
       }
     }, 100)

@@ -220,10 +220,14 @@
       async fetch() {
         const res = await this.$http.get(`heroes/${this.id}`)
         this.model = res.data
+      },
+      moveToTop() {
+        window.scrollTo(0,0)
       }
     },
     created() {
-      this.fetch()
+      this.fetch();
+      this.moveToTop()
     }
   }
 </script>
