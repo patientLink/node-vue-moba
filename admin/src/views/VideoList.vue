@@ -50,7 +50,7 @@ export default {
       console.log(res)
     },
     async remove(row) {
-      this.$confirm(`是否确定要删除视频 "${row.name}"`, '提示', {
+      this.$confirm(`是否确定要删除视频 "${row.title}"`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
