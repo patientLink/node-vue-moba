@@ -49,8 +49,8 @@
           </el-menu-item-group>
           <el-menu-item-group>
             <template slot="title">管理员</template>
-            <el-menu-item index="/admin_users/create">新建管理员</el-menu-item>
-            <el-menu-item index="/admin_users/list">管理员列表</el-menu-item>
+            <el-menu-item :disabled="isAdmin" index="/admin_users/create">新建管理员</el-menu-item>
+            <el-menu-item :disabled="isAdmin" index="/admin_users/list">管理员列表</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>
@@ -89,6 +89,7 @@
 </style>
 
 <script>
+  import {mapActions} from 'vuex' 
   export default {
     data() {
       return {
@@ -96,7 +97,13 @@
         username: localStorage.username || ''
       }
     },
+    computed: {
+      isAdmin() {
+        return !this.$store.state.user.roles.includes('admin')
+      }
+    },
     methods: {
+      ...mapActions('user',['resetToken']),
       handleCommand(command) {
         switch (command) {
           case 'logout':
@@ -105,7 +112,8 @@
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              localStorage.removeItem('token')
+              return this.resetToken()
+            }).then(() => {
               this.$message({
                 type: 'success',
                 message: '退出成功!'

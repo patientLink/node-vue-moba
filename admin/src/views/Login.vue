@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-card header="请先登录" class="login-card">
-      <el-form @submit.native.prevent="login">
+      <el-form @submit.native.prevent="userLogin">
         <el-form-item label="用户名">
           <el-input v-model="model.username"></el-input>
         </el-form-item>
@@ -10,7 +10,7 @@
         </el-form-item>
         <el-form-item >
           <el-button type="primary" native-type="submit">登录</el-button>
-          <el-button type="info" @click="showTip">游客登录</el-button>
+          <el-button type="info" @click="visitorLogin">游客登录</el-button>
         </el-form-item>
       </el-form>
       
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-
+import {mapActions} from 'vuex'
 export default {
   name: 'Login',
   data() {
@@ -30,11 +30,9 @@ export default {
     
   },
   methods: {
-    login() {
-      this.$http.post('login', this.model).then((res) => {
-        // console.log(res)
-        localStorage.token = res.data.token
-        localStorage.username = res.headers.user
+    ...mapActions('user',['login']),
+    userLogin() {
+      this.login({that:this, model:this.model}).then(() => {
         this.$router.push('/')
         this.$message({
           type: 'success',
@@ -44,8 +42,9 @@ export default {
         this.model.password = ''
       })
     },
-    showTip() {
-      this.$message('用户名：visitor  密码: 123456')
+    visitorLogin() {
+      this.model = {username: 'visitor', password: '123456'}
+      this.userLogin()
     }
   }
   

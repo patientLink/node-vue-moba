@@ -23,10 +23,12 @@ Vue.component('l-card', ListCard)
 Vue.component('load-more', LoadMore)
 
 import axios from 'axios'
-Vue.prototype.$http = axios.create({
+const instance = axios.create({
   baseURL: process.env.VUE_APP_API_URL || '/web/api'
   // baseURL: 'http://localhost:3000/web/api'
 })
+
+Vue.prototype.$http = instance;
 
 new Vue({
   router,

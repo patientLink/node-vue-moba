@@ -65,9 +65,9 @@ const routes = [
       { path: '/ads/edit/:id', component: AdEdit, props: true },
       { path: '/ads/list', component: AdList },
 
-      { path: '/admin_users/create', component: AdminUserEdit },
-      { path: '/admin_users/edit/:id', component: AdminUserEdit, props: true },
-      { path: '/admin_users/list', component: AdminUserList },
+      { path: '/admin_users/create', component: AdminUserEdit, meta:{role:'admin'} },
+      { path: '/admin_users/edit/:id', component: AdminUserEdit, props: true, meta:{role:'admin'} },
+      { path: '/admin_users/list', component: AdminUserList, meta:{role:'admin'} },
 
       { path: '/videos/create', component: VideoEdit },
       { path: '/videos/edit/:id', component: VideoEdit, props: true },
@@ -84,14 +84,28 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  if(!to.meta.isPublic && !localStorage.token) {
+import store from '../store'
+
+router.beforeEach(async (to, from, next) => {
+  const token = localStorage.token;
+  const hasRoles = store.state.user.roles && store.state.user.roles.length>0;
+  let roles = hasRoles ? store.state.user.roles : await store.dispatch('user/getInfo')
+  // if(hasRoles) {
+  //   roles = store.state.user.roles;
+  // }else{
+  //   await {roles} = store.dispatch('user','getInfo')
+  // }
+  console.log(roles)
+  if(!to.meta.isPublic && !token) {
     return next({name: 'Login'})
   }
-  if(localStorage.token && to.name == 'Login') {
+  if(token && to.name == 'Login') {
     return next({name: 'Main'})
   }
-  console.log(to.path)
+  if(token && to.meta.role && !roles.includes(to.meta.role)) {
+
+    return next({name: 'Main'})
+  }
   next()
 })
 
